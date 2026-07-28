@@ -1,0 +1,25 @@
+environments:
+  dev:
+    catalog: workspace
+    schema: dummy_test_dev
+    log_level: DEBUG
+
+  staging:
+    catalog: workspace
+    schema: dummy_test_staging
+    log_level: INFO
+
+  prod:
+    catalog: workspace
+    schema: dummy_test_prod
+    log_level: WARNING
+
+retry_policy:
+  max_attempts: 3
+  backoff_seconds: 10
+  backoff_multiplier: 2
+
+feature_flags:
+  enable_batch_validation: true
+  enable_summary_export: true
+  enable_markdown_report: false

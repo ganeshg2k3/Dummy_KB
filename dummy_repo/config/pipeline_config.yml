@@ -1,0 +1,27 @@
+pipeline:
+  name: dummy-data-pipeline
+  version: "1.0"
+  schedule: "0 2 * * *"
+
+source:
+  type: batch
+  format: json
+  path: /data/raw/records
+
+validation:
+  required_fields:
+    - id
+    - name
+    - created_at
+  strict_mode: true
+
+output:
+  format: json
+  destination: /data/processed/reports
+  compression: gzip
+
+alerts:
+  on_failure:
+    - email: data-team@example.com
+    - slack_channel: "#pipeline-alerts"
+  error_threshold_pct: 5.0
