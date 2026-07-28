@@ -1,0 +1,39 @@
+workflow:
+  name: dummy-ci-pipeline
+  triggers:
+    - push
+    - pull_request
+
+jobs:
+  lint:
+    runs_on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout
+      - name: Run linter
+        run: flake8 src/
+
+  test:
+    runs_on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run tests
+        run: pytest tests/ --cov=src
+
+  deploy:
+    runs_on: ubuntu-latest
+    needs: test
+    environment: staging
+    steps:
+      - name: Deploy to staging
+        run: ./scripts/deploy.sh staging
+
+notifications:
+  slack:
+    channel: "#ci-cd"
+    on_failure: true
+    on_success: false

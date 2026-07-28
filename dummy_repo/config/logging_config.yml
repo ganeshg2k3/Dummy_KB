@@ -1,0 +1,36 @@
+logging:
+  version: 1
+  root_level: INFO
+
+  handlers:
+    console:
+      type: stream
+      level: DEBUG
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+    file:
+      type: rotating_file
+      level: WARNING
+      path: /var/log/dummy_app/app.log
+      max_bytes: 10485760
+      backup_count: 5
+
+monitoring:
+  metrics_enabled: true
+  metrics_port: 9090
+  health_check_path: /health
+  health_check_interval_seconds: 15
+
+  thresholds:
+    cpu_warning_pct: 75
+    cpu_critical_pct: 90
+    memory_warning_pct: 80
+    memory_critical_pct: 95
+
+alerting:
+  channels:
+    - type: email
+      recipients:
+        - alerts@example.com
+    - type: pagerduty
+      service_key_env_var: PAGERDUTY_KEY

@@ -1,0 +1,27 @@
+database:
+  host: localhost
+  port: 5432
+  name: dummy_test_db
+  pool_size: 10
+  timeout_seconds: 30
+
+  credentials:
+    username: dummy_user
+    password_env_var: DB_PASSWORD
+
+replicas:
+  - host: replica1.example.com
+    port: 5432
+    read_only: true
+  - host: replica2.example.com
+    port: 5432
+    read_only: true
+
+connection_retry:
+  max_attempts: 5
+  initial_delay_seconds: 1
+  max_delay_seconds: 30
+
+logging:
+  slow_query_threshold_ms: 500
+  log_all_queries: false
